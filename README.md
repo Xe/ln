@@ -1,10 +1,10 @@
-# saw: A better logger for Go
+# ln: The Natural Logger for Go
 
-`saw` provides a simple interface to logging, and metrics, and
+`ln` provides a simple interface to logging, and metrics, and
 obviates the need to utilize purpose built metrics packages, like
 `go-metrics` for simple use cases.
 
-The design of `saw` centers around the idea of key-value pairs, which
+The design of `ln` centers around the idea of key-value pairs, which
 can be interpreted on the fly, but "Filters" to do things such as
 aggregated metrics, and report said metrics to, say Librato, or
 statsd.
