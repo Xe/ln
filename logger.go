@@ -40,7 +40,7 @@ var priStrings = []string{
 }
 
 func (p Priority) String() string {
-	if p < len(priStrings) {
+	if int(p) < len(priStrings) {
 		return priStrings[p]
 	}
 
