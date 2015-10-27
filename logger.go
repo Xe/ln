@@ -10,13 +10,21 @@ import (
 type Priority int
 
 const (
+	// PriEmergency is the emergency priority, and is the highest.
 	PriEmergency Priority = iota
+	// PriAlert is the alert priority
 	PriAlert
+	// PriCritical is the critical priority
 	PriCritical
+	// PriError is the error priority.
 	PriError
+	// PriWarning is the warning priority
 	PriWarning
+	// PriNotice is the notice priority
 	PriNotice
+	// PriInfo is the info priority
 	PriInfo
+	// PriDebug is the debug priority.
 	PriDebug
 )
 
@@ -32,7 +40,11 @@ var priStrings = []string{
 }
 
 func (p Priority) String() string {
-	return priStrings[p]
+	if p < len(priStrings) {
+		return priStrings[p]
+	}
+
+	return "UNKNOWN"
 }
 
 // Logger holds the current priority and list of filters

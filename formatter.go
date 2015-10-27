@@ -7,7 +7,6 @@ import (
 )
 
 var (
-
 	// DefaultTimeFormat represents the way in which time will be formatted by default
 	DefaultTimeFormat = time.RFC3339
 )
@@ -24,6 +23,9 @@ func init() {
 	DefaultFormatter = NewTextFormatter()
 }
 
+// TextFormatter formats events as key value pairs.
+// Any remaining text not wrapped in an instance of `F` will be
+// placed at the end.
 type TextFormatter struct {
 	TimeFormat string
 }
@@ -33,13 +35,15 @@ func NewTextFormatter() Formatter {
 	return &TextFormatter{TimeFormat: DefaultTimeFormat}
 }
 
+// Format implements the Formatter interface
 func (t *TextFormatter) Format(e Event) ([]byte, error) {
 	var writer bytes.Buffer
 
+	writer.WriteString("time=\"")
 	writer.WriteString(e.Time.Format(t.TimeFormat))
-	writer.WriteByte(' ')
+	writer.WriteString("\" ")
 
-	writer.WriteString("level=")
+	writer.WriteString("priority=")
 	writer.WriteString(e.Pri.String())
 
 	for k, v := range e.Data {
@@ -56,7 +60,7 @@ func (t *TextFormatter) Format(e Event) ([]byte, error) {
 		case string:
 			vs, _ := v.(string)
 			if shouldQuote(vs) {
-				writer.WriteString(fmt.Sprintf("%q", vs))
+				fmt.Fprintf(&writer, "%q", vs)
 			} else {
 				writer.WriteString(vs)
 			}
@@ -65,7 +69,7 @@ func (t *TextFormatter) Format(e Event) ([]byte, error) {
 			es := tmperr.Error()
 
 			if shouldQuote(es) {
-				writer.WriteString(fmt.Sprintf("%q", es))
+				fmt.Fprintf(&writer, "%q", es)
 			} else {
 				writer.WriteString(es)
 			}
@@ -75,12 +79,10 @@ func (t *TextFormatter) Format(e Event) ([]byte, error) {
 	}
 
 	if len(e.Message) > 0 {
-		writer.WriteByte(' ')
-		writer.WriteString(e.Message)
+		fmt.Fprintf(&writer, " _msg=%q", e.Message)
 	}
 
 	writer.WriteByte('\n')
-
 	return writer.Bytes(), nil
 }
 
