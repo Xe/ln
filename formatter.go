@@ -92,7 +92,7 @@ func shouldQuote(s string) bool {
 			(b >= 'a' && b <= 'z') ||
 			(b >= '0' && b <= '9') ||
 			(b == '-' || b == '.' || b == '#' ||
-				b == '/')) {
+				b == '/' || b == '_')) {
 			return true
 		}
 	}

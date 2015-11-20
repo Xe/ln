@@ -107,6 +107,13 @@ func (l *Logger) Log(p Priority, xs ...interface{}) {
 
 	event.Message = fmt.Sprint(bits...)
 
+	if l.Pri == PriDebug {
+		frame := callersFrame()
+		event.Data["_lineno"] = frame.lineno
+		event.Data["_function"] = frame.function
+		event.Data["_filename"] = frame.filename
+	}
+
 	l.filter(event)
 }
 
