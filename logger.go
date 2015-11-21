@@ -61,7 +61,7 @@ func init() {
 
 	// Default to STDOUT for logging, but allow LN_OUT to change it.
 	out := os.Stdout
-	if lnOut := os.Getenv("LN_OUT"); lnOut == "stderr" {
+	if os.Getenv("LN_OUT") == "<stderr>" {
 		out = os.Stderr
 	}
 
