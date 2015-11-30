@@ -59,10 +59,26 @@ var DefaultLogger *Logger
 func init() {
 	var defaultFilters []Filter
 
-	defaultFilters = append(defaultFilters, NewWriterFilter(os.Stdout, nil))
+	// Default to STDOUT for logging, but allow LN_OUT to change it.
+	out := os.Stdout
+	if os.Getenv("LN_OUT") == "<stderr>" {
+		out = os.Stderr
+	}
+
+	// Default to INFO for the level, but allow LN_PRI to change it.
+	pri := PriInfo
+	if lnPri := os.Getenv("LN_PRI"); lnPri != "" {
+		for idx, p := range priStrings {
+			if p == lnPri {
+				pri = Priority(idx)
+			}
+		}
+	}
+
+	defaultFilters = append(defaultFilters, NewWriterFilter(out, nil))
 
 	DefaultLogger = &Logger{
-		Pri:     PriInfo,
+		Pri:     pri,
 		Filters: defaultFilters,
 	}
 
