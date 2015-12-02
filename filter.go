@@ -18,10 +18,10 @@ func (ff FilterFunc) Apply(e Event) bool {
 }
 
 // Run implements the Filter interface
-func (ff *FilterFunc) Run() {}
+func (ff FilterFunc) Run() {}
 
 // Close implements the Filter interface
-func (ff *FilterFunc) Close() {}
+func (ff FilterFunc) Close() {}
 
 // WriterFilter implements a filter, which arbitrarily writes to an io.Writer
 type WriterFilter struct {
