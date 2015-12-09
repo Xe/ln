@@ -125,6 +125,9 @@ func (l *Logger) Log(p Priority, xs ...interface{}) {
 
 	if l.Pri == PriDebug {
 		frame := callersFrame()
+		if event.Data == nil {
+			event.Data = make(F)
+		}
 		event.Data["_lineno"] = frame.lineno
 		event.Data["_function"] = frame.function
 		event.Data["_filename"] = frame.filename
