@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"testing"
+	"time"
 )
 
 func TestSimpleError(t *testing.T) {
@@ -18,6 +19,28 @@ func TestSimpleError(t *testing.T) {
 		`err="This is an Error!!!"`,
 		`fooey`,
 		`bar=foo`,
+	}
+
+	for _, line := range data {
+		if !bytes.Contains(out.Bytes(), []byte(line)) {
+			t.Fatalf("Bytes: %s not in %s", line, out.Bytes())
+		}
+	}
+}
+
+func TestTimeConversion(t *testing.T) {
+	out := bytes.Buffer{}
+	oldFilters := DefaultLogger.Filters
+	DefaultLogger.Filters = []Filter{NewWriterFilter(&out, nil)}
+	defer func() {
+		DefaultLogger.Filters = oldFilters
+	}()
+
+	var zeroTime time.Time
+
+	Info(F{"zero": zeroTime})
+	data := []string{
+		`zero=0001-01-01T00:00:00Z`,
 	}
 
 	for _, line := range data {

@@ -73,6 +73,9 @@ func (t *TextFormatter) Format(e Event) ([]byte, error) {
 			} else {
 				writer.WriteString(es)
 			}
+		case time.Time:
+			tmptime, _ := v.(time.Time)
+			writer.WriteString(tmptime.Format(time.RFC3339))
 		default:
 			fmt.Fprint(&writer, v)
 		}
