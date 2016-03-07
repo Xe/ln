@@ -1,6 +1,9 @@
 package ln
 
-import "io"
+import (
+	"io"
+	"sync"
+)
 
 // Filter interface for defining chain filters
 type Filter interface {
@@ -25,6 +28,7 @@ func (ff FilterFunc) Close() {}
 
 // WriterFilter implements a filter, which arbitrarily writes to an io.Writer
 type WriterFilter struct {
+	sync.Mutex
 	Out       io.Writer
 	Formatter Formatter
 }
@@ -44,7 +48,9 @@ func NewWriterFilter(out io.Writer, format Formatter) *WriterFilter {
 func (w *WriterFilter) Apply(e Event) bool {
 	output, err := w.Formatter.Format(e)
 	if err == nil {
+		w.Lock()
 		w.Out.Write(output)
+		w.Unlock()
 	}
 
 	return true
