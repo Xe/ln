@@ -56,8 +56,11 @@ func (w *WriterFilter) Apply(e Event) bool {
 	return true
 }
 
-// Apply implements the Filter interface
+// Run implements the Filter interface
 func (w *WriterFilter) Run() {}
 
-// Apply implements the Filter interface
+// Close implements the Filter interface
 func (w *WriterFilter) Close() {}
+
+// NilFilter is safe to return as a Filter, but does nothing
+var NilFilter = FilterFunc(func(e Event) bool { return true })
