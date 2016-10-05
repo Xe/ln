@@ -7,13 +7,19 @@ import (
 	"time"
 )
 
-func TestSimpleError(t *testing.T) {
+func setup(t *testing.T) (*bytes.Buffer, func()) {
 	out := bytes.Buffer{}
 	oldFilters := DefaultLogger.Filters
 	DefaultLogger.Filters = []Filter{NewWriterFilter(&out, nil)}
-	defer func() {
+	return &out, func() {
 		DefaultLogger.Filters = oldFilters
-	}()
+	}
+}
+
+func TestSimpleError(t *testing.T) {
+	out, teardown := setup(t)
+	defer teardown()
+
 	Info(F{"err": fmt.Errorf("This is an Error!!!")}, "fooey", F{"bar": "foo"})
 	data := []string{
 		`err="This is an Error!!!"`,
@@ -29,12 +35,8 @@ func TestSimpleError(t *testing.T) {
 }
 
 func TestTimeConversion(t *testing.T) {
-	out := bytes.Buffer{}
-	oldFilters := DefaultLogger.Filters
-	DefaultLogger.Filters = []Filter{NewWriterFilter(&out, nil)}
-	defer func() {
-		DefaultLogger.Filters = oldFilters
-	}()
+	out, teardown := setup(t)
+	defer teardown()
 
 	var zeroTime time.Time
 
@@ -51,15 +53,12 @@ func TestTimeConversion(t *testing.T) {
 }
 
 func TestDebug(t *testing.T) {
+	out, teardown := setup(t)
+	defer teardown()
+
 	oldPri := DefaultLogger.Pri
 	defer func() { DefaultLogger.Pri = oldPri }()
 
-	out := bytes.Buffer{}
-	oldFilters := DefaultLogger.Filters
-	DefaultLogger.Filters = []Filter{NewWriterFilter(&out, nil)}
-	defer func() {
-		DefaultLogger.Filters = oldFilters
-	}()
 
 	// set priority to Debug
 	DefaultLogger.Pri = PriDebug
@@ -76,5 +75,36 @@ func TestDebug(t *testing.T) {
 		if !bytes.Contains(out.Bytes(), []byte(line)) {
 			t.Fatalf("Bytes: %s not in %s", line, out.Bytes())
 		}
+	}
+}
+
+func TestFer(t *testing.T) {
+	out, teardown := setup(t)
+	defer teardown()
+
+	underTest := foobar{Foo: 1, Bar: "quux"}
+
+	Info(underTest)
+	data := []string{
+		`foo=1`,
+		`bar=quux`,
+	}
+
+	for _, line := range data {
+		if !bytes.Contains(out.Bytes(), []byte(line)) {
+			t.Fatalf("Bytes: %s not in %s", line, out.Bytes())
+		}
+	}
+}
+
+type foobar struct {
+	Foo int
+	Bar string
+}
+
+func (f foobar) F() map[string]interface{} {
+	return map[string]interface{} {
+		"foo": f.Foo,
+		"bar": f.Bar,
 	}
 }

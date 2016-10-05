@@ -87,6 +87,10 @@ func init() {
 // F is a key-value mapping for structured data.
 type F map[string]interface{}
 
+type Fer interface {
+	F() map[string]interface{}
+}
+
 // Event represents an event
 type Event struct {
 	Pri     Priority
@@ -104,19 +108,23 @@ func (l *Logger) Log(p Priority, xs ...interface{}) {
 	var bits []interface{}
 	event := Event{Pri: p, Time: time.Now()}
 
+	addF := func(bf F) {
+		if event.Data == nil {
+			event.Data = bf
+		} else {
+			for k, v := range bf {
+				event.Data[k] = v
+			}
+		}
+	}
+
 	// Assemble the event
 	for _, b := range xs {
-		switch b.(type) {
-		case F:
-			bf := b.(F)
-			if event.Data == nil {
-				event.Data = bf
-			} else {
-				for k, v := range bf {
-					event.Data[k] = v
-				}
-			}
-		default:
+		if bf, ok := b.(F); ok {
+			addF(bf)
+		} else if fer, ok := b.(Fer); ok {
+			addF(F(fer.F()))
+		} else {
 			bits = append(bits, b)
 		}
 	}
