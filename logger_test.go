@@ -20,7 +20,7 @@ func TestSimpleError(t *testing.T) {
 	out, teardown := setup(t)
 	defer teardown()
 
-	Info(F{"err": fmt.Errorf("This is an Error!!!")}, "fooey", F{"bar": "foo"})
+	Log(F{"err": fmt.Errorf("This is an Error!!!")}, "fooey", F{"bar": "foo"})
 	data := []string{
 		`err="This is an Error!!!"`,
 		`fooey`,
@@ -40,7 +40,7 @@ func TestTimeConversion(t *testing.T) {
 
 	var zeroTime time.Time
 
-	Info(F{"zero": zeroTime})
+	Log(F{"zero": zeroTime})
 	data := []string{
 		`zero=0001-01-01T00:00:00Z`,
 	}
@@ -56,19 +56,15 @@ func TestDebug(t *testing.T) {
 	out, teardown := setup(t)
 	defer teardown()
 
-	oldPri := DefaultLogger.Pri
-	defer func() { DefaultLogger.Pri = oldPri }()
-
-
 	// set priority to Debug
-	DefaultLogger.Pri = PriDebug
-	Debug(F{"err": fmt.Errorf("This is an Error!!!")})
+	Error(fmt.Errorf("This is an Error!!!"), F{})
 
 	data := []string{
 		`err="This is an Error!!!"`,
 		`_lineno=`,
 		`_function=ln.TestDebug`,
-		`_filename=github.com/apg/ln/logger_test.go`,
+		`_filename=github.com/Xe/ln/logger_test.go`,
+		`cause="This is an Error!!!"`,
 	}
 
 	for _, line := range data {
@@ -84,7 +80,7 @@ func TestFer(t *testing.T) {
 
 	underTest := foobar{Foo: 1, Bar: "quux"}
 
-	Info(underTest)
+	Log(underTest)
 	data := []string{
 		`foo=1`,
 		`bar=quux`,
@@ -103,7 +99,7 @@ type foobar struct {
 }
 
 func (f foobar) F() map[string]interface{} {
-	return map[string]interface{} {
+	return map[string]interface{}{
 		"foo": f.Foo,
 		"bar": f.Bar,
 	}

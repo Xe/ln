@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 	"time"
+
+	"github.com/pkg/errors"
 )
 
 // Logger holds the current priority and list of filters
@@ -94,6 +96,26 @@ func (l *Logger) filter(e Event) {
 	}
 }
 
+// Error logs an error and information about the context of said error.
+func (l *Logger) Error(err error, xs ...interface{}) {
+	data := F{}
+	frame := callersFrame()
+
+	data["_lineno"] = frame.lineno
+	data["_function"] = frame.function
+	data["_filename"] = frame.filename
+	data["err"] = err
+
+	cause := errors.Cause(err)
+	if cause != nil {
+		data["cause"] = cause.Error()
+	}
+
+	xs = append(xs, data)
+
+	l.Log(xs...)
+}
+
 // Fatal logs this set of values, then exits with status code 1.
 func (l *Logger) Fatal(xs ...interface{}) {
 	l.Log(xs...)
@@ -103,12 +125,17 @@ func (l *Logger) Fatal(xs ...interface{}) {
 
 // Default Implementation
 
-// Log logs arbitrary key->value data.
+// Log is the generic logging method.
 func Log(xs ...interface{}) {
 	DefaultLogger.Log(xs...)
 }
 
-// Fatal logs some set of data and then exits the program.
+// Error logs an error and information about the context of said error.
+func Error(err error, xs ...interface{}) {
+	DefaultLogger.Error(err, xs...)
+}
+
+// Fatal logs this set of values, then exits with status code 1.
 func Fatal(xs ...interface{}) {
 	DefaultLogger.Fatal(xs...)
 }
