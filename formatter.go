@@ -43,9 +43,6 @@ func (t *TextFormatter) Format(e Event) ([]byte, error) {
 	writer.WriteString(e.Time.Format(t.TimeFormat))
 	writer.WriteString("\" ")
 
-	writer.WriteString("priority=")
-	writer.WriteString(e.Pri.String())
-
 	for k, v := range e.Data {
 		writer.WriteByte(' ')
 		if shouldQuote(k) {
