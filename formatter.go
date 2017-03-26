@@ -41,7 +41,7 @@ func (t *TextFormatter) Format(e Event) ([]byte, error) {
 
 	writer.WriteString("time=\"")
 	writer.WriteString(e.Time.Format(t.TimeFormat))
-	writer.WriteString("\" ")
+	writer.WriteString("\"")
 
 	for k, v := range e.Data {
 		writer.WriteByte(' ')
