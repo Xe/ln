@@ -30,14 +30,28 @@ func init() {
 	DefaultLogger = &Logger{
 		Filters: defaultFilters,
 	}
-
 }
 
 // F is a key-value mapping for structured data.
 type F map[string]interface{}
 
+// Extend concatentates one F with one or many Fer instances.
+func (f F) Extend(other ...Fer) {
+	for _, ff := range other {
+		for k, v := range ff.F() {
+			f[k] = v
+		}
+	}
+}
+
+// F makes F an Fer
+func (f F) F() F {
+	return f
+}
+
+// Fer allows any type to add fields to the structured logging key->value pairs.
 type Fer interface {
-	F() map[string]interface{}
+	F() F
 }
 
 // Event represents an event
@@ -118,6 +132,17 @@ func (l *Logger) Error(err error, xs ...interface{}) {
 
 // Fatal logs this set of values, then exits with status code 1.
 func (l *Logger) Fatal(xs ...interface{}) {
+	xs = append(xs, F{"fatal": true})
+
+	l.Log(xs...)
+
+	os.Exit(1)
+}
+
+// FatalErr combines Fatal and Error.
+func (l *Logger) FatalErr(err error, xs ...interface{}) {
+	xs = append(xs, F{"fatal": true})
+
 	l.Log(xs...)
 
 	os.Exit(1)
@@ -138,4 +163,9 @@ func Error(err error, xs ...interface{}) {
 // Fatal logs this set of values, then exits with status code 1.
 func Fatal(xs ...interface{}) {
 	DefaultLogger.Fatal(xs...)
+}
+
+// FatalErr combines Fatal and Error.
+func FatalErr(err error, xs ...interface{}) {
+	DefaultLogger.FatalErr(err, xs...)
 }
