@@ -20,7 +20,7 @@ func TestSimpleError(t *testing.T) {
 	out, teardown := setup(t)
 	defer teardown()
 
-	Log(F{"err": fmt.Errorf("This is an Error!!!")}, "fooey", F{"bar": "foo"})
+	Log(F{"err": fmt.Errorf("This is an Error!!!")}, F{"msg": "fooey", "bar": "foo"})
 	data := []string{
 		`err="This is an Error!!!"`,
 		`fooey`,
@@ -98,8 +98,8 @@ type foobar struct {
 	Bar string
 }
 
-func (f foobar) F() map[string]interface{} {
-	return map[string]interface{}{
+func (f foobar) F() F {
+	return F{
 		"foo": f.Foo,
 		"bar": f.Bar,
 	}

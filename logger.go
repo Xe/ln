@@ -1,7 +1,6 @@
 package ln
 
 import (
-	"fmt"
 	"os"
 	"time"
 
@@ -62,8 +61,7 @@ type Event struct {
 }
 
 // Log is the generic logging method.
-func (l *Logger) Log(xs ...interface{}) {
-	var bits []interface{}
+func (l *Logger) Log(xs ...Fer) {
 	event := Event{Time: time.Now()}
 
 	addF := func(bf F) {
@@ -76,18 +74,9 @@ func (l *Logger) Log(xs ...interface{}) {
 		}
 	}
 
-	// Assemble the event
-	for _, b := range xs {
-		if bf, ok := b.(F); ok {
-			addF(bf)
-		} else if fer, ok := b.(Fer); ok {
-			addF(F(fer.F()))
-		} else {
-			bits = append(bits, b)
-		}
+	for _, f := range xs {
+		addF(f.F())
 	}
-
-	event.Message = fmt.Sprint(bits...)
 
 	if os.Getenv("LN_DEBUG_ALL_EVENTS") == "1" {
 		frame := callersFrame()
@@ -111,7 +100,7 @@ func (l *Logger) filter(e Event) {
 }
 
 // Error logs an error and information about the context of said error.
-func (l *Logger) Error(err error, xs ...interface{}) {
+func (l *Logger) Error(err error, xs ...Fer) {
 	data := F{}
 	frame := callersFrame()
 
@@ -131,7 +120,7 @@ func (l *Logger) Error(err error, xs ...interface{}) {
 }
 
 // Fatal logs this set of values, then exits with status code 1.
-func (l *Logger) Fatal(xs ...interface{}) {
+func (l *Logger) Fatal(xs ...Fer) {
 	xs = append(xs, F{"fatal": true})
 
 	l.Log(xs...)
@@ -140,9 +129,23 @@ func (l *Logger) Fatal(xs ...interface{}) {
 }
 
 // FatalErr combines Fatal and Error.
-func (l *Logger) FatalErr(err error, xs ...interface{}) {
+func (l *Logger) FatalErr(err error, xs ...Fer) {
 	xs = append(xs, F{"fatal": true})
 
+	data := F{}
+	frame := callersFrame()
+
+	data["_lineno"] = frame.lineno
+	data["_function"] = frame.function
+	data["_filename"] = frame.filename
+	data["err"] = err
+
+	cause := errors.Cause(err)
+	if cause != nil {
+		data["cause"] = cause.Error()
+	}
+
+	xs = append(xs, data)
 	l.Log(xs...)
 
 	os.Exit(1)
@@ -151,21 +154,21 @@ func (l *Logger) FatalErr(err error, xs ...interface{}) {
 // Default Implementation
 
 // Log is the generic logging method.
-func Log(xs ...interface{}) {
+func Log(xs ...Fer) {
 	DefaultLogger.Log(xs...)
 }
 
 // Error logs an error and information about the context of said error.
-func Error(err error, xs ...interface{}) {
+func Error(err error, xs ...Fer) {
 	DefaultLogger.Error(err, xs...)
 }
 
 // Fatal logs this set of values, then exits with status code 1.
-func Fatal(xs ...interface{}) {
+func Fatal(xs ...Fer) {
 	DefaultLogger.Fatal(xs...)
 }
 
 // FatalErr combines Fatal and Error.
-func FatalErr(err error, xs ...interface{}) {
+func FatalErr(err error, xs ...Fer) {
 	DefaultLogger.FatalErr(err, xs...)
 }
