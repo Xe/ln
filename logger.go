@@ -1,6 +1,7 @@
 package ln
 
 import (
+	"context"
 	"os"
 	"time"
 
@@ -61,7 +62,7 @@ type Event struct {
 }
 
 // Log is the generic logging method.
-func (l *Logger) Log(xs ...Fer) {
+func (l *Logger) Log(ctx context.Context, xs ...Fer) {
 	event := Event{Time: time.Now()}
 
 	addF := func(bf F) {
@@ -88,19 +89,19 @@ func (l *Logger) Log(xs ...Fer) {
 		event.Data["_filename"] = frame.filename
 	}
 
-	l.filter(event)
+	l.filter(ctx, event)
 }
 
-func (l *Logger) filter(e Event) {
+func (l *Logger) filter(ctx context.Context, e Event) {
 	for _, f := range l.Filters {
-		if !f.Apply(e) {
+		if !f.Apply(ctx, e) {
 			return
 		}
 	}
 }
 
 // Error logs an error and information about the context of said error.
-func (l *Logger) Error(err error, xs ...Fer) {
+func (l *Logger) Error(ctx context.Context, err error, xs ...Fer) {
 	data := F{}
 	frame := callersFrame()
 
@@ -116,20 +117,20 @@ func (l *Logger) Error(err error, xs ...Fer) {
 
 	xs = append(xs, data)
 
-	l.Log(xs...)
+	l.Log(ctx, xs...)
 }
 
 // Fatal logs this set of values, then exits with status code 1.
-func (l *Logger) Fatal(xs ...Fer) {
+func (l *Logger) Fatal(ctx context.Context, xs ...Fer) {
 	xs = append(xs, F{"fatal": true})
 
-	l.Log(xs...)
+	l.Log(ctx, xs...)
 
 	os.Exit(1)
 }
 
 // FatalErr combines Fatal and Error.
-func (l *Logger) FatalErr(err error, xs ...Fer) {
+func (l *Logger) FatalErr(ctx context.Context, err error, xs ...Fer) {
 	xs = append(xs, F{"fatal": true})
 
 	data := F{}
@@ -146,7 +147,7 @@ func (l *Logger) FatalErr(err error, xs ...Fer) {
 	}
 
 	xs = append(xs, data)
-	l.Log(xs...)
+	l.Log(ctx, xs...)
 
 	os.Exit(1)
 }
@@ -154,21 +155,21 @@ func (l *Logger) FatalErr(err error, xs ...Fer) {
 // Default Implementation
 
 // Log is the generic logging method.
-func Log(xs ...Fer) {
-	DefaultLogger.Log(xs...)
+func Log(ctx context.Context, xs ...Fer) {
+	DefaultLogger.Log(ctx, xs...)
 }
 
 // Error logs an error and information about the context of said error.
-func Error(err error, xs ...Fer) {
-	DefaultLogger.Error(err, xs...)
+func Error(ctx context.Context, err error, xs ...Fer) {
+	DefaultLogger.Error(ctx, err, xs...)
 }
 
 // Fatal logs this set of values, then exits with status code 1.
-func Fatal(xs ...Fer) {
-	DefaultLogger.Fatal(xs...)
+func Fatal(ctx context.Context, xs ...Fer) {
+	DefaultLogger.Fatal(ctx, xs...)
 }
 
 // FatalErr combines Fatal and Error.
-func FatalErr(err error, xs ...Fer) {
-	DefaultLogger.FatalErr(err, xs...)
+func FatalErr(ctx context.Context, err error, xs ...Fer) {
+	DefaultLogger.FatalErr(ctx, err, xs...)
 }
