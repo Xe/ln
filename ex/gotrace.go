@@ -12,7 +12,7 @@ type goEventLogger struct {
 	ev trace.EventLog
 }
 
-// NewGoEventLogger will add all ln log spew into a go trace.EventLog
+// NewGoEventLogger will log ln information to a given trace.EventLog instance.
 func NewGoEventLogger(ev trace.EventLog) ln.Filter {
 	return &goEventLogger{ev: ev}
 }
@@ -61,6 +61,8 @@ func goTraceLogger(ctx context.Context, e ln.Event) bool {
 	return true
 }
 
+// NewGoTraceLogger will log ln information to a golang.org/x/net/trace.Trace
+// if it is present in the context of ln calls.
 func NewGoTraceLogger() ln.Filter {
 	return ln.FilterFunc(goTraceLogger)
 }
