@@ -79,6 +79,11 @@ func (l *Logger) Log(ctx context.Context, xs ...Fer) {
 		addF(f.F())
 	}
 
+	ctxf, ok := FFromContext(ctx)
+	if ok {
+		addF(ctxf)
+	}
+
 	if os.Getenv("LN_DEBUG_ALL_EVENTS") == "1" {
 		frame := callersFrame()
 		if event.Data == nil {
