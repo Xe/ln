@@ -38,8 +38,6 @@ func middlewareSpan(next http.Handler) http.Handler {
 
 		ctx = trace.NewContext(ctx, sp)
 
-		sp.LazyPrintf("%s %s %s %s user_agent=%q", r.Method, r.URL.Path, r.RemoteAddr, r.UserAgent())
-
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})
 }
