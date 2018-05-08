@@ -30,6 +30,6 @@ func TestOpname(t *testing.T) {
 	}
 	
 	if val != "base.extended" {
-		t.Fatalf("wanted base.extended, got: %v", val
+		t.Fatalf("wanted base.extended, got: %v", val)
 	}
 }
