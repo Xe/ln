@@ -30,9 +30,5 @@ func FFromContext(ctx context.Context) (F, bool) {
 	}
 
 	f, ok := fvp.(F)
-	if !ok {
-		return nil, false
-	}
-
-	return f, true
+	return f, ok
 }
