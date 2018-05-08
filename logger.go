@@ -116,7 +116,7 @@ func (l *Logger) Error(ctx context.Context, err error, xs ...Fer) {
 	data["err"] = err
 
 	cause := errors.Cause(err)
-	if cause != nil {
+	if cause != nil && cause.Error() != err.Error() {
 		data["cause"] = cause.Error()
 	}
 
@@ -147,7 +147,7 @@ func (l *Logger) FatalErr(ctx context.Context, err error, xs ...Fer) {
 	data["err"] = err
 
 	cause := errors.Cause(err)
-	if cause != nil {
+	if cause != nil && cause.Error() != err.Error() {
 		data["cause"] = cause.Error()
 	}
 
