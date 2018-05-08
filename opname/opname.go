@@ -15,7 +15,7 @@ const key ctxKey = iota
 
 // Get fetches the operation name from the given context.
 func Get(ctx context.Context) (string, bool) {
-	val, ok := ctx.Value(ctxKey).(string)
+	val, ok := ctx.Value(key).(string)
 	return val, ok
 }
 
