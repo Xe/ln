@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"testing"
 	"time"
+
+	"github.com/Xe/ln/opname"
 )
 
 var ctx context.Context
@@ -15,7 +17,10 @@ func setup(t *testing.T) (*bytes.Buffer, func()) {
 
 	out := bytes.Buffer{}
 	oldFilters := DefaultLogger.Filters
-	DefaultLogger.Filters = []Filter{NewWriterFilter(&out, nil)}
+	DefaultLogger.Filters = []Filter{
+		FilterFunc(opnameInEvents),
+		NewWriterFilter(&out, nil),
+	}
 	return &out, func() {
 		DefaultLogger.Filters = oldFilters
 	}
@@ -61,14 +66,17 @@ func TestDebug(t *testing.T) {
 	out, teardown := setup(t)
 	defer teardown()
 
+	mctx := opname.With(ctx, "test")
+
 	// set priority to Debug
-	Error(ctx, fmt.Errorf("This is an Error!!!"), F{})
+	Error(mctx, fmt.Errorf("This is an Error!!!"), F{})
 
 	data := []string{
 		`err="This is an Error!!!"`,
 		`_lineno=`,
 		`_function=ln.TestDebug`,
 		`_filename=github.com/Xe/ln/logger_test.go`,
+		`operation=test`,
 	}
 
 	for _, line := range data {
