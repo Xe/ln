@@ -27,5 +27,5 @@ func With(ctx context.Context, name string) context.Context {
 		name = prep + "." + name
 	}
 	
-	return context.WithValue(ctx, ctxKey, name)
+	return context.WithValue(ctx, key, name)
 }
