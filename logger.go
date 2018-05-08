@@ -25,7 +25,11 @@ func init() {
 		out = os.Stderr
 	}
 
-	defaultFilters = append(defaultFilters, NewWriterFilter(out, nil))
+	defaultFilters = append(
+		defaultFilters,
+		FilterFunc(opnameInEvents),
+		NewWriterFilter(out, nil),
+	)
 
 	DefaultLogger = &Logger{
 		Filters: defaultFilters,
