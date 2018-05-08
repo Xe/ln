@@ -69,7 +69,6 @@ func TestDebug(t *testing.T) {
 		`_lineno=`,
 		`_function=ln.TestDebug`,
 		`_filename=github.com/Xe/ln/logger_test.go`,
-		`cause="This is an Error!!!"`,
 	}
 
 	for _, line := range data {
