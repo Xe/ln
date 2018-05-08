@@ -8,7 +8,7 @@ import (
 func TestContextStorage(t *testing.T) {
 	var val interface{} = "bar"
 	ctx := context.Background()
-	ctx = WithF(ctx, F{"foo": val}
+	ctx = WithF(ctx, F{"foo": val})
         
 	f, ok := FFromContext(ctx)
 	if !ok {
