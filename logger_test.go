@@ -18,7 +18,6 @@ func setup(t *testing.T) (*bytes.Buffer, func()) {
 	out := bytes.Buffer{}
 	oldFilters := DefaultLogger.Filters
 	DefaultLogger.Filters = []Filter{
-		FilterFunc(opnameInEvents),
 		NewWriterFilter(&out, nil),
 	}
 	return &out, func() {

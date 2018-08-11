@@ -27,7 +27,6 @@ func init() {
 
 	defaultFilters = append(
 		defaultFilters,
-		FilterFunc(opnameInEvents),
 		NewWriterFilter(out, nil),
 	)
 

@@ -5,6 +5,8 @@ import (
 	"context"
 	"fmt"
 	"time"
+
+	"github.com/Xe/ln/opname"
 )
 
 var (
@@ -37,12 +39,16 @@ func NewTextFormatter() Formatter {
 }
 
 // Format implements the Formatter interface
-func (t *TextFormatter) Format(_ context.Context, e Event) ([]byte, error) {
+func (t *TextFormatter) Format(ctx context.Context, e Event) ([]byte, error) {
 	var writer bytes.Buffer
 
 	writer.WriteString("time=\"")
 	writer.WriteString(e.Time.Format(t.TimeFormat))
 	writer.WriteString("\"")
+
+	if op, ok := opname.Get(ctx); ok {
+		e.Data["operation"] = op
+	}
 
 	keys := make([]string, len(e.Data))
 	i := 0
