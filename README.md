@@ -21,9 +21,15 @@ log event.
 If `Apply` returns `false`, the iteration through the rest of the
 filters is aborted, and the log is dropped from further processing.
 
-## Current Status: Initial Development / Concept
+### Current Status: Known Stable
 
 ## Copyright
 
-(c) 2015, Andrew Gwozdziewycz, BSD Licensed. See LICENSE for more
-info.
+(c) 2015-2018, Andrew Gwozdziewycz, Christine Dodrill, BSD Licensed. 
+See LICENSE for more info.
+
+This library was forked from [apg's ln](https://github.com/apg/ln).
+This library is not the official ln (though it is mostly compatible 
+with it), but it is at least what I think a logger should be.
+
+I'm probably wrong.
