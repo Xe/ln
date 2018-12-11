@@ -3,6 +3,7 @@ package ln
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 	"time"
 
@@ -114,4 +115,22 @@ func shouldQuote(s string) bool {
 		}
 	}
 	return false
+}
+
+type jsonFormatter struct{}
+
+// JSONFormatter outputs json lines for use with tools like https://github.com/koenbollen/jl.
+func JSONFormatter() Formatter {
+	return jsonFormatter{}
+}
+
+func (j jsonFormatter) Format(ctx context.Context, e Event) ([]byte, error) {
+	if op, ok := opname.Get(ctx); ok {
+		e.Data["operation"] = op
+	}
+
+	e.Data["time"] = e.Time.Format(time.RFC3339)
+
+	data, err := json.Marshal(e.Data)
+	return append(data, '\n'), err
 }

@@ -3,10 +3,10 @@ package ln
 import "fmt"
 
 func withLevel(level, format string, args ...interface{}) Fer {
-	return F{level: fmt.Sprintf(format, args...), "level": level}
+	return F{"msg": fmt.Sprintf(format, args...), "level": level}
 }
 
-// Info adds an informational connotation to this log line. This is the 
+// Info adds an informational connotation to this log line. This is the
 // "default" state for things that can be ignored.
 func Info(format string, args ...interface{}) Fer {
 	return withLevel("info", format, args...)

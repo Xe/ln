@@ -13,6 +13,16 @@ type Logger struct {
 	Filters []Filter
 }
 
+// AddFilter adds a filter to the beginning of the stack.
+func (l *Logger) AddFilter(f Filter) {
+	l.Filters = append([]Filter{f}, l.Filters...)
+}
+
+// AddFilter adds a filter to the beginning of the default logger stack.
+func AddFilter(f Filter) {
+	DefaultLogger.AddFilter(f)
+}
+
 // DefaultLogger is the default implementation of Logger
 var DefaultLogger *Logger
 
@@ -25,9 +35,15 @@ func init() {
 		out = os.Stderr
 	}
 
+	var formatter Formatter
+	switch os.Getenv("LN_FORMATTER") {
+	case "json":
+		formatter = JSONFormatter()
+	}
+
 	defaultFilters = append(
 		defaultFilters,
-		NewWriterFilter(out, nil),
+		NewWriterFilter(out, formatter),
 	)
 
 	DefaultLogger = &Logger{
