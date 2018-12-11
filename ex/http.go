@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/Xe/ln"
+	"github.com/Xe/ln/opname"
 )
 
 func HTTPLog(next http.Handler) http.Handler {
@@ -18,6 +19,7 @@ func HTTPLog(next http.Handler) http.Handler {
 		}
 		ctx := ln.WithF(r.Context(), f)
 		st := time.Now()
+		ctx = opname.With(ctx, "http")
 
 		next.ServeHTTP(w, r.WithContext(ctx))
 
@@ -31,6 +33,6 @@ func HTTPLog(next http.Handler) http.Handler {
 			f["status"] = ws.Status()
 		}
 
-		ln.Log(r.Context(), f)
+		ln.Log(ctx, f)
 	})
 }
