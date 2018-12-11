@@ -10,7 +10,6 @@ import (
 
 	"github.com/Xe/ln"
 	"github.com/Xe/ln/ex"
-	"github.com/facebookgo/flagenv"
 	"golang.org/x/net/trace"
 )
 
@@ -20,7 +19,6 @@ var (
 )
 
 func main() {
-	flagenv.Parse()
 	flag.Parse()
 
 	ln.DefaultLogger.Filters = append(ln.DefaultLogger.Filters, ex.NewGoTraceLogger())
@@ -44,8 +42,8 @@ func middlewareSpan(next http.Handler) http.Handler {
 
 func handleIndex(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
-
-	ln.Log(ctx, ln.Action("index"), ln.F{"there_is": "no_danger"})
+	ctx = ln.WithF(ctx, ln.F{"there_is": "no_danger"})
+	ln.Log(ctx, ln.Info("There is no danger, citizen"))
 
 	http.Error(w, "There is no danger citizen", http.StatusOK)
 }
