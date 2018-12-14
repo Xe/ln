@@ -8,8 +8,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Xe/ln"
-	"github.com/Xe/ln/ex"
+	"within.website/ln"
+	"within.website/ln/ex"
 	"golang.org/x/net/trace"
 )
 

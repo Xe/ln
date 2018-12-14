@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Xe/ln/opname"
+	"within.website/ln/opname"
 )
 
 var ctx context.Context
@@ -74,7 +74,7 @@ func TestDebug(t *testing.T) {
 		`err="This is an Error!!!"`,
 		`_lineno=`,
 		`_function=ln.TestDebug`,
-		`_filename=github.com/Xe/ln/logger_test.go`,
+		`_filename=within.website/ln/logger_test.go`,
 		`operation=test`,
 	}
 

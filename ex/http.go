@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Xe/ln"
-	"github.com/Xe/ln/opname"
+	"within.website/ln"
+	"within.website/ln/opname"
 )
 
 func HTTPLog(next http.Handler) http.Handler {

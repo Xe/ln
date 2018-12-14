@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/Xe/ln/opname"
+	"within.website/ln/opname"
 )
 
 var (

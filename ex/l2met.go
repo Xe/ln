@@ -3,7 +3,7 @@ package ex
 import (
 	"time"
 
-	"github.com/Xe/ln"
+	"within.website/ln"
 )
 
 // This file deals with formatting of [l2met] style metrics.

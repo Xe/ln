@@ -1,7 +1,5 @@
-github.com/facebookarchive/flagenv v0.0.0-20160425205200-fcd59fca7456 h1:1NzATV1A9LeTWAuAJGd7vE/wYSO08EJQTrwKcBBR6Cw=
-github.com/facebookarchive/flagenv v0.0.0-20160425205200-fcd59fca7456/go.mod h1:Lbo+w7sC1xznzryrqUDoBBT2nLKV9JnDOzdiVMHYX/8=
-github.com/facebookgo/flagenv v0.0.0-20160425205200-fcd59fca7456 h1:CkmB2l68uhvRlwOTPrwnuitSxi/S3Cg4L5QYOcL9MBc=
-github.com/facebookgo/flagenv v0.0.0-20160425205200-fcd59fca7456/go.mod h1:zFhibDvPDWmtk4dAQ05sRobtyoffEHygEt3wSNuAzz8=
+github.com/Xe/ln v0.1.2 h1:VTF6Z95Kdd6S1RSjpnn0DFJV5Do9cfmHTHsE9OGI1dw=
+github.com/Xe/ln v0.1.2/go.mod h1:GWZDvjL0ZC/9SSjY8DJ2IOrID6Lejs7D8pgQyjqMYSk=
 github.com/pkg/errors v0.8.0 h1:WdK/asTD0HN+q6hsWO3/vpuAkAr+tw6aNJNDFFf0+qw=
 github.com/pkg/errors v0.8.0/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 golang.org/x/net v0.0.0-20180811021610-c39426892332 h1:efGso+ep0DjyCBJPjvoz0HI6UldX4Md2F1rZFe1ir0E=
