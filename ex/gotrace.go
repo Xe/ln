@@ -4,8 +4,8 @@ import (
 	"context"
 	"log"
 
-	"within.website/ln"
 	"golang.org/x/net/trace"
+	"within.website/ln"
 )
 
 type goEventLogger struct {
