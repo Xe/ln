@@ -134,6 +134,10 @@ func (l *Logger) Error(ctx context.Context, err error, xs ...Fer) {
 	data["_filename"] = frame.filename
 	data["err"] = err
 
+	if fer, ok := err.(Fer); ok {
+		data.Extend(fer)
+	}
+
 	cause := errors.Cause(err)
 	if cause != nil && cause.Error() != err.Error() {
 		data["cause"] = cause.Error()
