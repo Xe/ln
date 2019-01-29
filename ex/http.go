@@ -6,31 +6,43 @@ import (
 	"time"
 
 	"within.website/ln"
-	"within.website/ln/opname"
 )
 
+type statusResponseWriter struct {
+	http.ResponseWriter
+	status int
+}
+
+func (w *statusResponseWriter) WriteHeader(code int) {
+	w.status = code
+	w.ResponseWriter.WriteHeader(code)
+}
+
+// HTTPLog automagically logs HTTP traffic.
 func HTTPLog(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		host, _, _ := net.SplitHostPort(r.RemoteAddr)
 		f := ln.F{
-			"remote_ip":       host,
-			"x_forwarded_for": r.Header.Get("X-Forwarded-For"),
-			"path":            r.URL.Path,
+			"remote_ip": host,
+			"path":      r.URL.Path,
 		}
+
+		if xff := r.Header.Get("X-Forwarded-For"); xff != "" {
+			f["x_forwarded_for"] = xff
+		}
+
 		ctx := ln.WithF(r.Context(), f)
 		st := time.Now()
-		ctx = opname.With(ctx, "http")
+		srw := &statusResponseWriter{
+			ResponseWriter: w,
+		}
 
-		next.ServeHTTP(w, r.WithContext(ctx))
+		next.ServeHTTP(srw, r.WithContext(ctx))
 
-		af := time.Now()
-		f["request_duration"] = af.Sub(st)
+		f["request_duration"] = time.Since(st)
 
-		ws, ok := w.(interface {
-			Status() int
-		})
-		if ok {
-			f["status"] = ws.Status()
+		if srw.status != 0 {
+			f["status"] = srw.status
 		}
 
 		ln.Log(ctx, f)

@@ -20,7 +20,7 @@ func NewGoEventLogger(ev trace.EventLog) ln.Filter {
 func (gel *goEventLogger) Apply(ctx context.Context, e ln.Event) bool {
 	data, err := ln.DefaultFormatter.Format(ctx, e)
 	if err != nil {
-		log.Printf("wtf: error in log formatting: %v", err)
+		log.Printf("error in log formatting: %v", err)
 		return false
 	}
 
@@ -48,7 +48,7 @@ func goTraceLogger(ctx context.Context, e ln.Event) bool {
 
 	data, err := ln.DefaultFormatter.Format(ctx, e)
 	if err != nil {
-		log.Printf("wtf: error in log formatting: %v", err)
+		log.Printf("error in log formatting: %v", err)
 		return false
 	}
 
