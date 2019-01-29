@@ -1,7 +1,6 @@
 package ln
 
 import (
-	"bytes"
 	"context"
 	"fmt"
 	"testing"
@@ -40,9 +39,5 @@ func TestCustomErrorType(t *testing.T) {
 		`err_message=success`,
 	}
 
-	for _, line := range data {
-		if !bytes.Contains(out.Bytes(), []byte(line)) {
-			t.Fatalf("Bytes: %s not in %s", line, out.Bytes())
-		}
-	}
+	must(t, out, data)
 }

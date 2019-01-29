@@ -25,6 +25,16 @@ func setup(t *testing.T) (*bytes.Buffer, func()) {
 	}
 }
 
+func must(t *testing.T, out *bytes.Buffer, data []string) {
+	t.Helper()
+
+	for _, line := range data {
+		if !bytes.Contains(out.Bytes(), []byte(line)) {
+			t.Fatalf("Bytes: %s not in %s", line, out.Bytes())
+		}
+	}
+}
+
 func TestSimpleError(t *testing.T) {
 	out, teardown := setup(t)
 	defer teardown()
@@ -36,11 +46,7 @@ func TestSimpleError(t *testing.T) {
 		`bar=foo`,
 	}
 
-	for _, line := range data {
-		if !bytes.Contains(out.Bytes(), []byte(line)) {
-			t.Fatalf("Bytes: %s not in %s", line, out.Bytes())
-		}
-	}
+	must(t, out, data)
 }
 
 func TestTimeConversion(t *testing.T) {
@@ -54,11 +60,7 @@ func TestTimeConversion(t *testing.T) {
 		`zero=0001-01-01T00:00:00Z`,
 	}
 
-	for _, line := range data {
-		if !bytes.Contains(out.Bytes(), []byte(line)) {
-			t.Fatalf("Bytes: %s not in %s", line, out.Bytes())
-		}
-	}
+	must(t, out, data)
 }
 
 func TestDebug(t *testing.T) {
@@ -78,11 +80,7 @@ func TestDebug(t *testing.T) {
 		`operation=test`,
 	}
 
-	for _, line := range data {
-		if !bytes.Contains(out.Bytes(), []byte(line)) {
-			t.Fatalf("Bytes: %s not in %s", line, out.Bytes())
-		}
-	}
+	must(t, out, data)
 }
 
 func TestFer(t *testing.T) {
@@ -97,11 +95,7 @@ func TestFer(t *testing.T) {
 		`bar=quux`,
 	}
 
-	for _, line := range data {
-		if !bytes.Contains(out.Bytes(), []byte(line)) {
-			t.Fatalf("Bytes: %s not in %s", line, out.Bytes())
-		}
-	}
+	must(t, out, data)
 }
 
 type foobar struct {
