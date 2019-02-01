@@ -1,6 +1,6 @@
 package ln
 
-type wrappedError {
+type wrappedError struct {
   err error
 }
 
