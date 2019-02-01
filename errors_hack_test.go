@@ -1,5 +1,10 @@
 package ln
 
+import (
+  "errors"
+  "testing"
+)
+
 type wrappedError struct {
   err error
 }
