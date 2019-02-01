@@ -142,6 +142,7 @@ func (l *Logger) Error(ctx context.Context, err error, xs ...Fer) {
 	if cause != nil && cause.Error() != err.Error() {
 		data["cause"] = cause.Error()
 	}
+	doGoError(err, data)
 
 	xs = append(xs, data)
 
@@ -173,6 +174,7 @@ func (l *Logger) FatalErr(ctx context.Context, err error, xs ...Fer) {
 	if cause != nil && cause.Error() != err.Error() {
 		data["cause"] = cause.Error()
 	}
+	doGoError(err, data)
 
 	xs = append(xs, data)
 	l.Log(ctx, xs...)
