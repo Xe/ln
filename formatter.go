@@ -71,16 +71,16 @@ func (t *TextFormatter) Format(ctx context.Context, e Event) ([]byte, error) {
 
 		writer.WriteByte('=')
 
-		switch v.(type) {
+		switch e := v.(type) {
 		case string:
-			vs, _ := v.(string)
+			vs := e
 			if shouldQuote(vs) {
 				fmt.Fprintf(&writer, "%q", vs)
 			} else {
 				writer.WriteString(vs)
 			}
 		case error:
-			tmperr, _ := v.(error)
+			tmperr := e
 			es := tmperr.Error()
 
 			if shouldQuote(es) {
@@ -89,7 +89,7 @@ func (t *TextFormatter) Format(ctx context.Context, e Event) ([]byte, error) {
 				writer.WriteString(es)
 			}
 		case time.Time:
-			tmptime, _ := v.(time.Time)
+			tmptime := e
 			writer.WriteString(tmptime.Format(time.RFC3339))
 		default:
 			fmt.Fprint(&writer, v)

@@ -7,7 +7,7 @@ import (
 type ctxKey int
 
 const (
-	fKey = iota
+	fKey ctxKey = iota
 )
 
 // WithF stores or appends a given F instance into a context.
