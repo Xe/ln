@@ -1,7 +1,7 @@
 // Package opname contains an extensible "operation name" construct for go
-// applications. This allows a user to create a base operation, eg: 
+// applications. This allows a user to create a base operation, eg:
 // "createWidget" and then sub-operations such as "pgSaveWidget" and they will
-// get composed such as "createWidget.pgSaveWidget" in log lines. Each 
+// get composed such as "createWidget.pgSaveWidget" in log lines. Each
 // operation name adds a lightweight "layer" to the context.
 package opname
 
@@ -26,6 +26,6 @@ func With(ctx context.Context, name string) context.Context {
 	if ok {
 		name = prep + "." + name
 	}
-	
+
 	return context.WithValue(ctx, key, name)
 }

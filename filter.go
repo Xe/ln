@@ -50,7 +50,7 @@ func (w *WriterFilter) Apply(ctx context.Context, e Event) bool {
 	output, err := w.Formatter.Format(ctx, e)
 	if err == nil {
 		w.Lock()
-		w.Out.Write(output)
+		_, _ = w.Out.Write(output)
 		w.Unlock()
 	}
 
