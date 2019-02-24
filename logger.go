@@ -82,15 +82,14 @@ type Event struct {
 
 // Log is the generic logging method.
 func (l *Logger) Log(ctx context.Context, xs ...Fer) {
-	event := Event{Time: time.Now()}
+	event := Event{
+		Time: time.Now(),
+		Data: F{},
+	}
 
 	addF := func(bf F) {
-		if event.Data == nil {
-			event.Data = F{}
-		} else {
-			for k, v := range bf {
-				event.Data[k] = v
-			}
+		for k, v := range bf {
+			event.Data[k] = v
 		}
 	}
 
