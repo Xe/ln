@@ -86,7 +86,7 @@ func (l *Logger) Log(ctx context.Context, xs ...Fer) {
 
 	addF := func(bf F) {
 		if event.Data == nil {
-			event.Data = bf
+			event.Data = F{}
 		} else {
 			for k, v := range bf {
 				event.Data[k] = v
