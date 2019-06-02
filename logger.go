@@ -148,13 +148,13 @@ func (l *Logger) Error(ctx context.Context, err error, xs ...Fer) {
 	l.Log(ctx, xs...)
 }
 
-// Fatal logs this set of values, then exits with status code 1.
+// Fatal logs this set of values, then panics.
 func (l *Logger) Fatal(ctx context.Context, xs ...Fer) {
 	xs = append(xs, F{"fatal": true})
 
 	l.Log(ctx, xs...)
 
-	os.Exit(1)
+	panic("ln.Fatal called")
 }
 
 // FatalErr combines Fatal and Error.
@@ -178,7 +178,7 @@ func (l *Logger) FatalErr(ctx context.Context, err error, xs ...Fer) {
 	xs = append(xs, data)
 	l.Log(ctx, xs...)
 
-	os.Exit(1)
+	panic("ln.FatalErr called")
 }
 
 // Default Implementation
@@ -193,7 +193,7 @@ func Error(ctx context.Context, err error, xs ...Fer) {
 	DefaultLogger.Error(ctx, err, xs...)
 }
 
-// Fatal logs this set of values, then exits with status code 1.
+// Fatal logs this set of values, then panics.
 func Fatal(ctx context.Context, xs ...Fer) {
 	DefaultLogger.Fatal(ctx, xs...)
 }
