@@ -92,7 +92,12 @@ func (t *TextFormatter) Format(ctx context.Context, e Event) ([]byte, error) {
 			tmptime := e
 			writer.WriteString(tmptime.Format(time.RFC3339))
 		default:
-			fmt.Fprint(&writer, v)
+			st := fmt.Sprint(v)
+			if shouldQuote(st) {
+				fmt.Fprintf(&writer, "%q", st)
+			} else {
+				writer.WriteString(st)
+			}
 		}
 	}
 

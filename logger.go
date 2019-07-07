@@ -2,6 +2,8 @@ package ln
 
 import (
 	"context"
+	"io"
+	"log/syslog"
 	"os"
 	"time"
 
@@ -30,9 +32,17 @@ func init() {
 	var defaultFilters []Filter
 
 	// Default to STDOUT for logging, but allow LN_OUT to change it.
-	out := os.Stdout
-	if os.Getenv("LN_OUT") == "<stderr>" {
+	var out io.Writer = os.Stdout
+	switch os.Getenv("LN_OUT") {
+	case "<stderr>":
 		out = os.Stderr
+	case "<syslog>":
+		wr, err := syslog.New(syslog.LOG_NOTICE|syslog.LOG_USER, "")
+		if err != nil {
+			panic(err)
+		}
+
+		out = wr
 	}
 
 	var formatter Formatter
