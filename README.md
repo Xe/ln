@@ -1,6 +1,6 @@
 # ln: The Natural Logger for Go
 
-![Release](https://img.shields.io/github/release/Xe/ln.svg) [![License](https://img.shields.io/github/license/Xe/ln.svg)](https://github.com/Xe/ln/blob/master/LICENSE) [![GoDoc](https://godoc.org/within.website/ln?status.svg)](https://godoc.org/within.website/ln) [![Build Status](https://travis-ci.org/Xe/ln.svg?branch=master)](https://travis-ci.org/Xe/ln) [![Go Report Card](https://goreportcard.com/badge/github.com/Xe/ln)](https://goreportcard.com/report/github.com/Xe/ln)
+[![License](https://img.shields.io/github/license/Xe/ln.svg)](https://github.com/Xe/ln/blob/master/LICENSE) [![GoDoc](https://godoc.org/within.website/ln?status.svg)](https://godoc.org/within.website/ln) [![Build Status](https://travis-ci.org/Xe/ln.svg?branch=master)](https://travis-ci.org/Xe/ln) [![Go Report Card](https://goreportcard.com/badge/github.com/Xe/ln)](https://goreportcard.com/report/github.com/Xe/ln)
 
 `ln` provides a simple interface to contextually aware structured logging. 
 The design of `ln` centers around the idea of key-value pairs, which
