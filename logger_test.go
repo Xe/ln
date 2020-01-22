@@ -76,7 +76,7 @@ func TestDebug(t *testing.T) {
 		`err="This is an Error!!!"`,
 		`_lineno=`,
 		`_function=ln.TestDebug`,
-		`_filename=within.website/ln/logger_test.go`,
+		`ln/logger_test.go`,
 		`operation=test`,
 	}
 

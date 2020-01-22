@@ -4,8 +4,8 @@ env:
   - GOPROXY=https://cache.greedo.xeserv.us GO111MODULE=on
 
 go:
-  - "1.10"
-  - "1.11"
+  - "1.12"
+  - "1.13"
 
 go_import_path: within.website/ln
 
