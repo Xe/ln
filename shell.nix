@@ -6,4 +6,5 @@ let
     };
 in pkgs.mkShell {
   buildInputs = with pkgs; [ go goimports golint nur.repos.xe.gopls ];
+  LN_FORMATTER = "text";
 }
