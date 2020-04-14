@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.0]
+
+### Changed
+- Default logging format is now JSON, to get logfmt output use `LN_FORMATTER=text`
+
+## [0.8.0]
+
+### Added
+- add Fmt format
+
 ## [0.7.0]
 
 ### Added
