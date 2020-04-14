@@ -6,8 +6,9 @@ env:
 go:
   - "1.12"
   - "1.13"
+  - "1.14"
 
 go_import_path: within.website/ln
 
 script:
-  - go test -v -race -cover ./...
+  - LN_FORMATTER=text go test -v -race -cover ./...

@@ -47,7 +47,9 @@ func init() {
 
 	var formatter Formatter
 	switch os.Getenv("LN_FORMATTER") {
-	case "json":
+	case "text":
+		formatter = NewTextFormatter()
+	default:
 		formatter = JSONFormatter()
 	}
 
