@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.8.0]
 
 ### Added
-- add Fmt format
+- Add Fmt function for adding printf style messages
 
 ## [0.7.0]
 
