@@ -136,6 +136,12 @@ func (j jsonFormatter) Format(ctx context.Context, e Event) ([]byte, error) {
 
 	e.Data["time"] = e.Time.Format(time.RFC3339)
 
+	if err, ok := e.Data["err"]; ok {
+		if err, ok := err.(error); ok {
+			e.Data["err"] = err.Error()
+		}
+	}
+
 	data, err := json.Marshal(e.Data)
 	return append(data, '\n'), err
 }
