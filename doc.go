@@ -21,5 +21,7 @@ log event.
 
 If `Apply` returns `false`, the iteration through the rest of the
 filters is aborted, and the log is dropped from further processing.
+
+Deprecated: use log/slog instead.
 */
 package ln // import "within.website/ln"
